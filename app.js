@@ -194,7 +194,8 @@
         '<div class="result-msg">' +
         '"' + esc(query.trim()) + '" 은(는) <strong>배제업종 목록(127건)</strong>에서 찾을 수 없습니다.<br>' +
         '이는 "그런 업종이 없다"는 뜻이 아니라 <strong>이 목록에 없다</strong>는 뜻입니다. ' +
-        '정확한 업종·업태·코드는 <a href="https://hometax.go.kr" target="_blank" rel="noopener">홈택스 업종코드 조회</a>에서 확인하십시오.' +
+        '정확한 업종·업태·코드는 <a href="https://hometax.go.kr" target="_blank" rel="noopener">홈택스 업종코드 조회</a>에서 확인하십시오.<br>' +
+        "혹시 건물명·지역명을 찾으시나요? ②번 탭에서 검색하십시오." +
         "</div>"
       ));
       return;
@@ -358,7 +359,8 @@
     renderTier2Rows(rows, {
       emptyMsg:
         '"' + esc(query.trim()) + '" 이(가) 포함된 건물명·지역명을 별표4 지역기준 목록에서 찾을 수 없습니다. ' +
-        "다른 표기(예: 동 이름, 상가명 축약형)로 다시 검색해 보십시오."
+        "다른 표기(예: 동 이름, 상가명 축약형)로 다시 검색해 보십시오.<br>" +
+        "혹시 업종을 찾으시나요? ①번 탭에서 검색하십시오."
     });
   });
 

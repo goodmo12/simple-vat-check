@@ -3,19 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>간이과세 배제 확인 (참고용)</title>
+<title>간이과세 될까? (참고용)</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="top">
-  <h1>간이과세 배제 확인</h1>
+  <h1>간이과세 될까?</h1>
+  <p class="sub">국세청 배제기준 대조 · 매출 기준은 포함하지 않습니다</p>
   <p class="sub" id="noticeLine">고시 정보 불러오는 중…</p>
 </header>
 
 <section class="disclaimer" id="disclaimer">
   <p><strong>이 도구는 확정 판정기가 아니라 확인 보조 도구입니다.</strong>
-  아래 결과는 참고용이며, 최종 간이과세 적용 여부는 관할 세무서 또는 세무대리인 확인이 필요합니다.</p>
+  아래 결과는 참고용이며, 최종 간이과세 적용 여부는 관할 세무서 또는 세무대리인 확인이 필요합니다.
+  또한 이 도구는 <strong>고시의 배제기준만</strong> 확인합니다. <strong>직전연도 매출(공급대가)이 기준액 이상이면 배제기준과
+  무관하게 일반과세</strong>이며, 그 부분은 확인해 드리지 않습니다.</p>
   <details>
     <summary>근거: 제7조(간이과세 적용) 원문 보기</summary>
     <p id="article7Text" class="legal-text"></p>
@@ -27,14 +30,15 @@
 </div>
 
 <nav class="tabs" id="tabs">
-  <button type="button" class="tab-btn active" data-tab="tier1">① 종목기준 검색</button>
-  <button type="button" class="tab-btn" data-tab="tier2">② 지역기준 검색</button>
+  <button type="button" class="tab-btn active" data-tab="tier1">① 내 업종으로 확인</button>
+  <button type="button" class="tab-btn" data-tab="tier2">② 내 사업장 위치로 확인</button>
 </nav>
 
 <!-- ===================== TIER 1 ===================== -->
 <section id="tier1" class="tab-panel active">
-  <h2>① 종목기준 배제 확인</h2>
+  <h2>내 업종으로 확인 (고시 종목기준)</h2>
   <p class="hint">
+    <strong>업종 이름이나 업종코드를 넣습니다.</strong>(건물명·지역명은 ②번 탭입니다.)<br>
     업종 키워드(예: 백화점) 또는 6자리 업종코드로 검색하십시오.
     이 목록은 <strong>배제업종 목록(127건)</strong>이지 전체 업종코드표가 아닙니다.
     검색 결과가 없다고 해서 그런 업종이 존재하지 않는다는 뜻이 아닙니다.
@@ -44,7 +48,7 @@
 
   <form id="tier1Form" class="search-form" autocomplete="off">
     <label for="jongmokQuery">업종 키워드 또는 6자리 업종코드</label>
-    <input type="text" id="jongmokQuery" placeholder="예: 백화점  또는  521910">
+    <input type="text" id="jongmokQuery" placeholder="예: 백화점, 편의점, 521910">
 
     <label for="regionSelect">사업장 소재 지역</label>
     <select id="regionSelect">
@@ -73,8 +77,9 @@
 
 <!-- ===================== TIER 2 ===================== -->
 <section id="tier2" class="tab-panel">
-  <h2>② 지역기준 확인 (건물명·지역명 검색)</h2>
+  <h2>내 사업장 위치로 확인 (고시 지역기준)</h2>
   <p class="hint">
+    <strong>건물명이나 동 이름을 넣습니다.</strong>(업종은 ①번 탭입니다.)<br>
     지역기준은 <a href="https://hometax.go.kr" target="_blank" rel="noopener">별표 4</a> 원문에 나열된
     건물·구역 단위로 정해져 있습니다. 건물명·지역명으로 검색하거나, 관할 지방국세청 → 세무서 순으로 찾아보십시오.
   </p>
@@ -91,7 +96,7 @@
 
   <form id="tier2NameForm" class="search-form">
     <label for="nameQuery">건물명·지역명 검색어</label>
-    <input type="text" id="nameQuery" placeholder="예: 롯데백화점, 가양동">
+    <input type="text" id="nameQuery" placeholder="예: 롯데백화점, 가양동, 신도림테크노마트">
     <button type="submit">검색</button>
   </form>
 
