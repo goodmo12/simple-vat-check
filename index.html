@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>간이과세 배제 확인 (참고용)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <h1>간이과세 배제 확인</h1>
+  <p class="sub" id="noticeLine">고시 정보 불러오는 중…</p>
+</header>
+
+<section class="disclaimer" id="disclaimer">
+  <p><strong>이 도구는 확정 판정기가 아니라 확인 보조 도구입니다.</strong>
+  아래 결과는 참고용이며, 최종 간이과세 적용 여부는 관할 세무서 또는 세무대리인 확인이 필요합니다.</p>
+  <details>
+    <summary>근거: 제7조(간이과세 적용) 원문 보기</summary>
+    <p id="article7Text" class="legal-text"></p>
+  </details>
+</section>
+
+<div id="dataError" class="error-banner" hidden>
+  데이터 파일을 불러오지 못했습니다. 페이지를 새로고침해 주세요. (index.html, style.css, app.js, data/*.data.js 파일이 같은 폴더 구조로 있어야 합니다.)
+</div>
+
+<nav class="tabs" id="tabs">
+  <button type="button" class="tab-btn active" data-tab="tier1">① 종목기준 검색</button>
+  <button type="button" class="tab-btn" data-tab="tier2">② 지역기준 검색</button>
+</nav>
+
+<!-- ===================== TIER 1 ===================== -->
+<section id="tier1" class="tab-panel active">
+  <h2>① 종목기준 배제 확인</h2>
+  <p class="hint">
+    업종 키워드(예: 백화점) 또는 6자리 업종코드로 검색하십시오.
+    이 목록은 <strong>배제업종 목록(127건)</strong>이지 전체 업종코드표가 아닙니다.
+    검색 결과가 없다고 해서 그런 업종이 존재하지 않는다는 뜻이 아닙니다.
+    업종코드를 모르시면
+    <a href="https://hometax.go.kr" target="_blank" rel="noopener">홈택스 업종코드 조회</a>를 이용하십시오.
+  </p>
+
+  <form id="tier1Form" class="search-form" autocomplete="off">
+    <label for="jongmokQuery">업종 키워드 또는 6자리 업종코드</label>
+    <input type="text" id="jongmokQuery" placeholder="예: 백화점  또는  521910">
+
+    <label for="regionSelect">사업장 소재 지역</label>
+    <select id="regionSelect">
+      <option value="">지역을 선택하십시오</option>
+      <option value="seoul">서울특별시</option>
+      <option value="gwangyeoksi">광역시(부산·대구·인천·광주·대전·울산)</option>
+      <option value="capital17">수도권 17개 시 (수원·성남·의정부·안양·부천·광명·안산·시흥·고양·과천·군포·의왕·하남·구리·남양주·용인·평택)</option>
+      <option value="other">그 외 지역(도·군 등)</option>
+    </select>
+
+    <div id="capitalCityWrap" hidden>
+      <label for="capitalCitySelect">시 선택</label>
+      <select id="capitalCitySelect"></select>
+      <p class="hint small">목록에 없는 시라면 위 지역 선택에서 "그 외 지역"을 선택하십시오.</p>
+    </div>
+
+    <div id="eupmyeonWrap" hidden class="checkbox-line">
+      <label><input type="checkbox" id="eupmyeonCheck"> 사업장이 해당 시의 읍·면 지역에 있습니다</label>
+    </div>
+
+    <button type="submit">검색</button>
+  </form>
+
+  <div id="tier1Result" class="result-area" aria-live="polite"></div>
+</section>
+
+<!-- ===================== TIER 2 ===================== -->
+<section id="tier2" class="tab-panel">
+  <h2>② 지역기준 확인 (건물명·지역명 검색)</h2>
+  <p class="hint">
+    지역기준은 <a href="https://hometax.go.kr" target="_blank" rel="noopener">별표 4</a> 원문에 나열된
+    건물·구역 단위로 정해져 있습니다. 건물명·지역명으로 검색하거나, 관할 지방국세청 → 세무서 순으로 찾아보십시오.
+  </p>
+
+  <div class="myCodeWrap">
+    <label for="myCodeInput">내 업종코드(선택, 6자리) — 지역별 제외 업종 대조용</label>
+    <input type="text" id="myCodeInput" placeholder="예: 525911">
+  </div>
+
+  <div class="tier2-mode">
+    <button type="button" class="mode-btn active" data-mode="name">건물명·지역명 검색</button>
+    <button type="button" class="mode-btn" data-mode="office">세무서 드릴다운</button>
+  </div>
+
+  <form id="tier2NameForm" class="search-form">
+    <label for="nameQuery">건물명·지역명 검색어</label>
+    <input type="text" id="nameQuery" placeholder="예: 롯데백화점, 가양동">
+    <button type="submit">검색</button>
+  </form>
+
+  <div id="tier2OfficeForm" class="search-form" hidden>
+    <label for="regionalOfficeSelect">지방국세청</label>
+    <select id="regionalOfficeSelect">
+      <option value="">선택하십시오</option>
+    </select>
+    <label for="taxOfficeSelect">세무서</label>
+    <select id="taxOfficeSelect" disabled>
+      <option value="">지방국세청을 먼저 선택하십시오</option>
+    </select>
+  </div>
+
+  <div id="tier2Result" class="result-area" aria-live="polite"></div>
+</section>
+
+<!-- ===================== 공통 안내 ===================== -->
+<section class="notes">
+  <details>
+    <summary>제5조(지역기준) 예외 4종 — 해당 시 지역기준에도 불구하고 간이과세 적용 가능</summary>
+    <ul id="exceptionList"></ul>
+  </details>
+
+  <details>
+    <summary>제6조(적용순위) 원문 — 종목기준·지역기준 결과를 합치지 않는 이유</summary>
+    <p class="legal-text" id="article6Text"></p>
+    <p class="caution">
+      문언상 종목·부동산임대·과세유흥 기준을 적용해 간이과세 대상이 되면 지역기준과 무관하게 간이과세를 적용한다고 읽힙니다.
+      문면대로 읽으면 지역기준이 사실상 무력화되는 결과가 되어 세무 해석이 확정되어 있지 않습니다.
+      이 때문에 이 도구는 <strong>①번(종목기준)과 ②번(지역기준) 결과를 하나의 결론으로 합치지 않고 각각 별도로 표시</strong>합니다.
+      최종 판단은 반드시 세무서·세무대리인 확인을 거치십시오.
+    </p>
+  </details>
+
+  <details>
+    <summary>이 도구가 다루지 않는 기준</summary>
+    <p>
+      부동산임대업기준(제3조)과 과세유흥장소기준(제2조)에 대한 배제 데이터는 존재하지만, 이번 MVP 범위 밖으로
+      이 도구에서 판정하지 않습니다. 해당 업종을 영위하신다면 관할 세무서에 별도로 확인하십시오.
+    </p>
+  </details>
+
+  <p class="source-line" id="sourceLine"></p>
+</section>
+
+<script src="data/meta.data.js"></script>
+<script src="data/jongmok.data.js"></script>
+<script src="data/jiyeok.data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
