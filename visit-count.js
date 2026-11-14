@@ -15,7 +15,8 @@
   var EVENTS = Object.freeze({
     searchJongmok: "vat-check-search-jongmok", // ① 업종 검색 실행
     searchName: "vat-check-search-name",       // ② 건물명·지역명 검색 실행
-    pickOffice: "vat-check-pick-office"        // ② 세무서 드릴다운 선택 완료
+    pickOffice: "vat-check-pick-office",       // ② 세무서 드릴다운 선택 완료
+    firstUse: "vat-check-first-use"            // 위 3개 중 무엇이든 이 방문에서 처음 쓴 순간 1회
   });
   var ALLOWED = Object.keys(EVENTS).map(function (k) { return EVENTS[k]; });
 
@@ -90,9 +91,22 @@
     } catch (err) { /* 측정 실패는 무시 */ }
   }
 
+  // 사용 행동 1회를 센다: 해당 이벤트를 보내고, 이 추적기에서 처음이면 firstUse 도 1번 보낸다.
+  // 추적기는 페이지 로드마다 하나 만든다(app.js). 입력값은 받지 않는다 — 이벤트 이름만.
+  function makeUseTracker() {
+    var firstSent = false;
+    return function trackUse(name, env) {
+      trackEvent(name, env);
+      if (!firstSent) {
+        firstSent = true;
+        trackEvent(EVENTS.firstUse, env);
+      }
+    };
+  }
+
   var api = {
     GOATCOUNTER_CODE: GOATCOUNTER_CODE, EVENTS: EVENTS,
-    campaignQuery: campaignQuery, trimReferrer: trimReferrer, trackPageview: trackPageview, trackEvent: trackEvent
+    campaignQuery: campaignQuery, trimReferrer: trimReferrer, trackPageview: trackPageview, trackEvent: trackEvent, makeUseTracker: makeUseTracker
   };
   root.TF_VISIT = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;

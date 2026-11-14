@@ -11,6 +11,7 @@
   // 방문 측정(visit-count.js). 없거나 막혀도 도구는 그대로 동작한다. 입력값은 보내지 않는다.
   var TFA = window.TF_VISIT || { trackPageview: function () {}, trackEvent: function () {}, EVENTS: {} };
   TFA.trackPageview();
+  var trackUse = TFA.makeUseTracker ? TFA.makeUseTracker() : function () {};
 
   // ---------- 0. 데이터 로드 확인 ----------
   var META = window.TF_META;
@@ -190,7 +191,7 @@
       return;
     }
 
-    TFA.trackEvent(TFA.EVENTS.searchJongmok);
+    trackUse(TFA.EVENTS.searchJongmok);
     var matches = searchJongmok(query);
     var regionQ = jongmokRegionQualifies(); // true / false / null
 
@@ -335,7 +336,7 @@
       lastTier2Rows = null;
       return;
     }
-    TFA.trackEvent(TFA.EVENTS.pickOffice);
+    trackUse(TFA.EVENTS.pickOffice);
     var rows = JIYEOK.filter(function (r) { return r.regional_office === office && r.tax_office === tax; });
     renderTier2Rows(rows, { emptyMsg: "해당 세무서의 지역기준 데이터가 없습니다." });
   });
@@ -359,7 +360,7 @@
       lastTier2Rows = null;
       return;
     }
-    TFA.trackEvent(TFA.EVENTS.searchName);
+    trackUse(TFA.EVENTS.searchName);
     var rows = JIYEOK.filter(function (row) {
       return (row.search_key || "").indexOf(nq) !== -1;
     });
